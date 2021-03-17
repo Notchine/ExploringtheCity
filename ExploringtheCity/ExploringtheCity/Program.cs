@@ -14,6 +14,8 @@ public class Program
 	{
 		public int PlayerHealth;
 		public int PlayerAttack;
+		public int LVL;
+		public int EXPToNextLVL;
 		public int EXP;
 	}
 	public static Player p1;
@@ -117,10 +119,10 @@ public class Program
 
 
 		//description of room
-		Console.WriteLine("You are now standing in the middle of the busy sidewalk of the city, the faceless crowd pushing and shoving past you. You notice a large locked box chained shut which has a small keyhole in front.");
+		Console.WriteLine("You are now standing in the middle of the busy sidewalk of the city, the faceless crowd pushing and shoving past you. You notice a PECULIAR LOCKED BOX chained shut which has a small keyhole in front.");
 
 		//player options
-		Console.WriteLine("1. Investigate the Locked Box");
+		Console.WriteLine("1. Investigate the PECULIAR LOCKED BOX");
 		Console.WriteLine("2. Return to the alleyway");
 		Console.WriteLine("3. Continue down the street.");
 
@@ -130,11 +132,14 @@ public class Program
 		switch (imput)
 		{
 			case 1:
-				Console.WriteLine("You decide to exit the alleyway as there is no reason for you to remain here.");
-				IsRunning = false;
-				Combat(thief);
-				Thread.Sleep(2000);
-				Room2();
+				if (inventory2.Contains("Small Key")) 
+				{
+					Console.WriteLine("After unlocking the PECULIAR LOCKED BOX, the oversized padlock as well as the chains tightly wrapped around it thud to the ground, generating a sound so loud it could be heard even beyond the sounds of the bustling city streets.");
+
+					Console.WriteLine("After opening the PECULIAR LOCKED BOX, you discover the SMALL CRACKED BATON and place it into your inventory. You also throw the SMALL KEY away, as you doubt you'll get much usage out of it anymore.");
+					inventory2.Add("Small Cracked Baton");
+				}
+				Room1();
 				break; //breaks out of this entire case, moving  on the next part of da code
 			case 2:
 				Console.WriteLine(deathText);
@@ -147,7 +152,7 @@ public class Program
 	public static void Room2()
 	{
 		//description of room
-		Console.WriteLine("You are standing on the side of the bustling night time street. Dozens are rushing past you, not offering a single care for your existence as they march past aimlessly. You notice a suspiciously locked box on the side of the pavement which has an odd looking keyhole.");
+		Console.WriteLine("room2 text");
 
 		//player options
 		Console.WriteLine("1. Use the Key");
@@ -357,7 +362,9 @@ public class Program
 		//player stats
 		p1.PlayerAttack = 2;
 		p1.PlayerHealth = 10;
+		p1.LVL = 1;
 		p1.EXP = 0;
+		p1.EXPToNextLVL = 5;
 
 		//enemy stats
 		thief.EnemyName = "thief";
@@ -368,7 +375,7 @@ public class Program
 
 		//index of all items in the game
 
-		//inventory[0] = "Odd Key";
+		//inventory[0] = "Small Key";
 		//inventory[1] = "Pistol";
 		//inventory[2] = "Moldy Burger";
 		//inventory[3] = "Small Cracked Batton";
