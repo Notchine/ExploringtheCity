@@ -152,7 +152,7 @@ public class Program
 	public static void Room2()
 	{
 		//description of room
-		Console.WriteLine("room2 text");
+		Console.WriteLine("room2 text lol");
 
 		//player options
 		Console.WriteLine("1. Use the Key");
