@@ -13,6 +13,7 @@ public class Program
 	public struct Player
 	{
 		public int PlayerHealth;
+		public int PlayerMaxHP;
 		public int PlayerAttack;
 		public int LVL;
 		public int EXPToNextLVL;
@@ -23,6 +24,7 @@ public class Program
 	public struct Enemy
 	{
 		public string EnemyName;
+		public int EnemyMaxHP;
 		public int EnemyHealth;
 		public int EnemyAttack;
 	}
@@ -55,6 +57,7 @@ public class Program
 			{
 				Console.WriteLine("Enemy Defeated!");
 				//write Exp earned and whether they level up maybe
+				enemy.EnemyHealth = +enemy.EnemyMaxHP;
 				break;
 			}
 			else
@@ -91,9 +94,9 @@ public class Program
 		Console.WriteLine("2. Stay in the alleyway");
 
 		//user input
-		int imput = Convert.ToInt32(Console.ReadLine());
+		int input = Convert.ToInt32(Console.ReadLine());
 		//condition check to move rooms
-		switch (imput)
+		switch (input)
 		{
 			case 1:
 				Console.WriteLine("You decide to exit the alleyway as there is no reason for you to remain here.");
@@ -127,9 +130,9 @@ public class Program
 		Console.WriteLine("3. Continue down the street.");
 
 		//user input
-		int imput = Convert.ToInt32(Console.ReadLine());
+		int input = Convert.ToInt32(Console.ReadLine());
 		//condition check to move rooms
-		switch (imput)
+		switch (input)
 		{
 			case 1:
 				if (inventory2.Contains("Small Key")) 
@@ -159,9 +162,9 @@ public class Program
 		Console.WriteLine("2. Walk further down the street");
 		Console.WriteLine("3. Return to the alleyway");
 		//user input
-		int imput = Convert.ToInt32(Console.ReadLine());
+		int input = Convert.ToInt32(Console.ReadLine());
 		//condition check to move rooms
-		switch (imput)
+		switch (input)
 		{
 			case 1:
 				Console.WriteLine("You attempt to use the key...");
@@ -184,9 +187,9 @@ public class Program
 		Console.WriteLine("2. ");
 		Console.WriteLine("3. ");
 		//user input
-		int imput = Convert.ToInt32(Console.ReadLine());
+		int input = Convert.ToInt32(Console.ReadLine());
 		//condition check to move rooms
-		switch (imput)
+		switch (input)
 		{
 			case 1:
 				Console.WriteLine("");
@@ -210,9 +213,9 @@ public class Program
 		Console.WriteLine("2. ");
 		Console.WriteLine("3. ");
 		//user input
-		int imput = Convert.ToInt32(Console.ReadLine());
+		int input = Convert.ToInt32(Console.ReadLine());
 		//condition check to move rooms
-		switch (imput)
+		switch (input)
 		{
 			case 1:
 				Console.WriteLine("");
@@ -236,9 +239,9 @@ public class Program
 		Console.WriteLine("2. ");
 		Console.WriteLine("3. ");
 		//user input
-		int imput = Convert.ToInt32(Console.ReadLine());
+		int input = Convert.ToInt32(Console.ReadLine());
 		//condition check to move rooms
-		switch (imput)
+		switch (input)
 		{
 			case 1:
 				Console.WriteLine("");
@@ -262,9 +265,9 @@ public class Program
 		Console.WriteLine("2. ");
 		Console.WriteLine("3. ");
 		//user input
-		int imput = Convert.ToInt32(Console.ReadLine());
+		int input = Convert.ToInt32(Console.ReadLine());
 		//condition check to move rooms
-		switch (imput)
+		switch (input)
 		{
 			case 1:
 				Console.WriteLine("");
@@ -288,9 +291,9 @@ public class Program
 		Console.WriteLine("2. ");
 		Console.WriteLine("3. ");
 		//user input
-		int imput = Convert.ToInt32(Console.ReadLine());
+		int input = Convert.ToInt32(Console.ReadLine());
 		//condition check to move rooms
-		switch (imput)
+		switch (input)
 		{
 			case 1:
 				Console.WriteLine("");
@@ -314,9 +317,9 @@ public class Program
 		Console.WriteLine("2. ");
 		Console.WriteLine("3. ");
 		//user input
-		int imput = Convert.ToInt32(Console.ReadLine());
+		int input = Convert.ToInt32(Console.ReadLine());
 		//condition check to move rooms
-		switch (imput)
+		switch (input)
 		{
 			case 1:
 				Console.WriteLine("");
@@ -340,9 +343,9 @@ public class Program
 		Console.WriteLine("2. ");
 		Console.WriteLine("3. ");
 		//user input
-		int imput = Convert.ToInt32(Console.ReadLine());
+		int input = Convert.ToInt32(Console.ReadLine());
 		//condition check to move rooms
-		switch (imput)
+		switch (input)
 		{
 			case 1:
 				Console.WriteLine("");
@@ -362,6 +365,7 @@ public class Program
 		//player stats
 		p1.PlayerAttack = 2;
 		p1.PlayerHealth = 10;
+		p1.PlayerMaxHP = 10;
 		p1.LVL = 1;
 		p1.EXP = 0;
 		p1.EXPToNextLVL = 5;
@@ -370,8 +374,10 @@ public class Program
 		thief.EnemyName = "thief";
 		thief.EnemyAttack = 1;
 		thief.EnemyHealth = 4;
+		thief.EnemyMaxHP = 4;
 		drugAddict.EnemyAttack = 2;
 		drugAddict.EnemyHealth = 6;
+		drugAddict.EnemyMaxHP = 6;
 
 		//index of all items in the game
 
@@ -379,7 +385,7 @@ public class Program
 		//inventory[1] = "Pistol";
 		//inventory[2] = "Moldy Burger";
 		//inventory[3] = "Small Cracked Batton";
-
+		bool thiefSpawn = true;
 		bool IsRunning = true;
 		while (IsRunning == true)
 		{
