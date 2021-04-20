@@ -50,7 +50,7 @@ public class Program
     public static void Combat(Enemy enemy)
 	{
 		Console.WriteLine("Enemy encountered! You have been attacked by the " + enemy.EnemyName);
-
+		Thread.Sleep(2000);
 		while (p1.PlayerHealth > 0)
 		{
 			if (enemy.EnemyHealth <= 0)
@@ -64,8 +64,12 @@ public class Program
 			{
 				enemy.EnemyHealth -= p1.PlayerAttack;
 				Console.WriteLine("Reamining Enemy HP: " + enemy.EnemyHealth);
+				Thread.Sleep(500);
+
 				p1.PlayerHealth -= enemy.EnemyAttack;
 				Console.WriteLine("Remaining Player HP: " + p1.PlayerHealth);
+				Thread.Sleep(500);
+
 
 				if (p1.PlayerHealth <= 0)
 				{
@@ -155,7 +159,7 @@ public class Program
 	public static void Room2()
 	{
 		//description of room
-		Console.WriteLine("room2 text lol");
+		Console.WriteLine("You are now in the shopping district. This place seems even more bustling than the city streets, with even more people rushing past you as you try to make your way towards  ");
 
 		//player options
 		Console.WriteLine("1. Use the Key");
