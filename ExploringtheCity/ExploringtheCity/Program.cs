@@ -9,7 +9,7 @@ public class Program
 	public static bool IsRunning = true;
 	//public static string[] inventory = new string[10];
 	public static ArrayList inventory2 = new ArrayList();
-
+	public static bool thiefSpawn = true;
 	public struct Player
 	{
 		public int PlayerHealth;
@@ -27,6 +27,7 @@ public class Program
 		public int EnemyMaxHP;
 		public int EnemyHealth;
 		public int EnemyAttack;
+		public int EnemyEXP;
 	}
 	public static Enemy thief;
 	public static Enemy drugAddict;
@@ -104,11 +105,23 @@ public class Program
 		{
 			case 1:
 				Console.WriteLine("You decide to exit the alleyway as there is no reason for you to remain here.");
-				Console.WriteLine("Suddenly, you notice shifting movements in the corner of your eye from the shadows!");
 				IsRunning = false;
-				Combat(thief);
-				Thread.Sleep(2000);
-				Room1();
+				if (thiefSpawn == true)
+				{
+					Console.WriteLine("Suddenly, you notice shifting movements in the corner of your eye from the shadows!");
+					Console.WriteLine();
+					Thread.Sleep(1500);
+					Combat(thief);
+					thiefSpawn = false;
+					Console.WriteLine("After narrowly surviving the encounter with the thief, you quickly exit the cramped alleyway.");
+					Console.WriteLine();
+					Thread.Sleep(4000);
+					Room1();
+				}
+				else if (thiefSpawn == false)
+				{
+					Room1();
+				}
 				break; //breaks out of this entire case, moving  on the next part of da code
 			case 2:
 				Console.WriteLine("Nothing happens as you stand idly in the alleyway.");
@@ -149,7 +162,8 @@ public class Program
 				Room1();
 				break; //breaks out of this entire case, moving  on the next part of da code
 			case 2:
-				Console.WriteLine(deathText);
+				Console.WriteLine("You turn around and begin walking towards the alleyway you were previously in.");
+				StartingRoom();
 				break;
 			default:
 				Console.WriteLine("Invalid entry, try again.");
@@ -379,9 +393,11 @@ public class Program
 		thief.EnemyAttack = 1;
 		thief.EnemyHealth = 4;
 		thief.EnemyMaxHP = 4;
+		thief.EnemyEXP = 3;
 		drugAddict.EnemyAttack = 2;
 		drugAddict.EnemyHealth = 6;
 		drugAddict.EnemyMaxHP = 6;
+		drugAddict.EnemyEXP = 5;
 
 		//index of all items in the game
 
@@ -389,7 +405,6 @@ public class Program
 		//inventory[1] = "Pistol";
 		//inventory[2] = "Moldy Burger";
 		//inventory[3] = "Small Cracked Batton";
-		bool thiefSpawn = true;
 		bool IsRunning = true;
 		while (IsRunning == true)
 		{
