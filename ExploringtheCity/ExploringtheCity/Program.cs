@@ -176,19 +176,25 @@ public class Program
 		Console.WriteLine("You are now in the shopping district. This place seems even more bustling than the city streets, with even more people rushing past you as you try to make your way towards  ");
 
 		//player options
-		Console.WriteLine("1. Use the Key");
-		Console.WriteLine("2. Walk further down the street");
-		Console.WriteLine("3. Return to the alleyway");
+		Console.WriteLine("1. Walk to the city streets");
+		Console.WriteLine("2. Walk to the train station");
+		Console.WriteLine("3. enter the store");
+		//codeword for entering black market is "the stallion is shiny"
 		//user input
 		int input = Convert.ToInt32(Console.ReadLine());
 		//condition check to move rooms
 		switch (input)
 		{
 			case 1:
-				Console.WriteLine("You attempt to use the key...");
+				Console.WriteLine("You make your way back to the city streets...");
+				Room1();
 				break; //breaks out of this entire case, moving  on the next part of da code
 			case 2:
-				Console.WriteLine(deathText);
+				Console.WriteLine("You make your way to the train station...");
+				Room3();
+				break;
+			case 3:
+				Console.WriteLine("You approach the store door, push it open, and begin to speak with the cashier...");
 				break;
 			default:
 				Console.WriteLine("Invalid entry, try again.");
