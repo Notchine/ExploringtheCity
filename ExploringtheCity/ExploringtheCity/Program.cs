@@ -204,23 +204,27 @@ public class Program
 	public static void Room3()
 	{
 		//description of room
-		Console.WriteLine("");
+		Console.WriteLine("You are now in the train station. The large gathering of people outside seem to all be attempting to squeeze themselves in behind you, attempting to catch the train as quickly as possible. From here, you can either exit back into the shopping district, take the train to the park or take the train to the abandoned school.");
 
 		//player options
-		Console.WriteLine("1. ");
-		Console.WriteLine("2. ");
-		Console.WriteLine("3. ");
+		Console.WriteLine("1. Exit to the shopping district");
+		Console.WriteLine("2. take the train to the park");
+		Console.WriteLine("3. take the train to the abandoned school");
 		//user input
 		int input = Convert.ToInt32(Console.ReadLine());
 		//condition check to move rooms
 		switch (input)
 		{
 			case 1:
-				Console.WriteLine("");
+				Console.WriteLine("You make your way back to the shopping district...");
+				Room2();
 				//Thread.Sleep(2000);
 				break; //breaks out of this entire case, moving  on the next part of da code
 			case 2:
-				Console.WriteLine("");
+				Console.WriteLine("You make your way park...");
+				break;
+			case 3:
+				Console.WriteLine("You make your way back to the abandoned park...");
 				break;
 			default:
 				Console.WriteLine("Invalid entry, try again.");
@@ -230,12 +234,13 @@ public class Program
 	public static void Room4()
 	{
 		//description of room
-		Console.WriteLine("");
+		Console.WriteLine("You are now in the store. This shop is mostly empty, besides the singular shopkeeper who welcomes you with a smile and suggests that you take a thorough glance through his wares for anything that peeks your interest.");
 
 		//player options
+		Console.WriteLine("SHOP INVENTORY");
+
 		Console.WriteLine("1. ");
 		Console.WriteLine("2. ");
-		Console.WriteLine("3. ");
 		//user input
 		int input = Convert.ToInt32(Console.ReadLine());
 		//condition check to move rooms
