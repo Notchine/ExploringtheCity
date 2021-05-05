@@ -152,18 +152,27 @@ public class Program
 		switch (input)
 		{
 			case 1:
-				if (inventory2.Contains("Small Key")) 
+				if (inventory2.Contains("Small Key"))
 				{
 					Console.WriteLine("After unlocking the PECULIAR LOCKED BOX, the oversized padlock as well as the chains tightly wrapped around it thud to the ground, generating a sound so loud it could be heard even beyond the sounds of the bustling city streets.");
 
 					Console.WriteLine("After opening the PECULIAR LOCKED BOX, you discover the SMALL CRACKED BATON and place it into your inventory. You also throw the SMALL KEY away, as you doubt you'll get much usage out of it anymore.");
 					inventory2.Add("Small Cracked Baton");
 				}
-				Room1();
+				else
+				{
+					Console.WriteLine("It seems to be chained shut and cannot be opened right now.");
+					Console.WriteLine();
+					Room1();
+				}
 				break; //breaks out of this entire case, moving  on the next part of da code
 			case 2:
 				Console.WriteLine("You turn around and begin walking towards the alleyway you were previously in.");
 				StartingRoom();
+				break;
+			case 3:
+				Console.WriteLine("You make your way down the city streets...");
+				Room2();
 				break;
 			default:
 				Console.WriteLine("Invalid entry, try again.");
@@ -173,13 +182,14 @@ public class Program
 	public static void Room2()
 	{
 		//description of room
-		Console.WriteLine("You are now in the shopping district. This place seems even more bustling than the city streets, with even more people rushing past you as you try to make your way towards  ");
+		Console.WriteLine("You are now in the shopping district. This place seems even more bustling than the city streets, with even more people rushing past you as you try to find your way through the densely packed hoard.");
 
 		//player options
 		Console.WriteLine("1. Walk to the city streets");
 		Console.WriteLine("2. Walk to the train station");
 		Console.WriteLine("3. enter the store");
 		//codeword for entering black market is "the stallion is shiny"
+		//use different switches, one for before you discover the black market and one for after. Use a static boolean and set it to true when youre ready to enter the black market.
 		//user input
 		int input = Convert.ToInt32(Console.ReadLine());
 		//condition check to move rooms
