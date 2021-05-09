@@ -10,7 +10,7 @@ public class Program
 	//public static string[] inventory = new string[10];
 	public static ArrayList inventory2 = new ArrayList();
 	public static bool thiefSpawn = true;
-	public static bool blackMarketKnowledge = true;
+	public static bool blackMarketKnowledge = false;
 	public struct Player
 	{
 		public int PlayerHealth;
@@ -19,6 +19,7 @@ public class Program
 		public int LVL;
 		public int EXPToNextLVL;
 		public int EXP;
+		public int Gold;
 	}
 	#region levelling
 	//	void LevelUp()
@@ -40,6 +41,7 @@ public static Player p1;
 		public int EnemyHealth;
 		public int EnemyAttack;
 		public int EnemyEXP;
+		public int EnemyGold;
 	}
 	public static Enemy thief;
 	public static Enemy drugAddict;
@@ -68,8 +70,10 @@ public static Player p1;
 			if (enemy.EnemyHealth <= 0)
 			{
 				Console.WriteLine("Enemy Defeated!");
+				Console.WriteLine("");
 				p1.EXP += enemy.EnemyEXP;
 				Console.WriteLine("Earned EXP: "+ enemy.EnemyEXP);
+				Console.WriteLine("Earned Gold: " + enemy.EnemyGold);
 				Console.WriteLine("Total Gained Experience: "+ p1.EXP);
 				Console.WriteLine("EXP to next level: " + p1.EXPToNextLVL);
 				//write Exp earned and whether they level up maybe
@@ -266,12 +270,15 @@ public static Player p1;
 	public static void Room3()
 	{
 		//description of room
+		Console.WriteLine(" ");
 		Console.WriteLine("You are now in the train station. The large gathering of people outside seem to all be attempting to squeeze themselves in behind you, attempting to catch the train as quickly as possible. From here, you can either exit back into the shopping district, take the train to the park or take the train to the abandoned school.");
+		Console.WriteLine(" ");
 
 		//player options
 		Console.WriteLine("1. Exit to the shopping district");
 		Console.WriteLine("2. take the train to the park");
 		Console.WriteLine("3. take the train to the abandoned school");
+		Console.WriteLine(" ");
 		//user input
 		int input = Convert.ToInt32(Console.ReadLine());
 		//condition check to move rooms
@@ -296,10 +303,12 @@ public static Player p1;
 	public static void Room4()
 	{
 		//description of room
+		Console.WriteLine(" ");
 		Console.WriteLine("You are now in the store. This shop is mostly empty, besides the singular shopkeeper who welcomes you with a smile and suggests that you take a thorough glance through his wares for anything that peeks your interest.");
+		Console.WriteLine(" ");
 
 		//player options
-		Console.WriteLine("SHOP INVENTORY");
+		Console.WriteLine("*SHOP INVENTORY*");
 
 		Console.WriteLine("1. ");
 		Console.WriteLine("2. ");
@@ -309,7 +318,7 @@ public static Player p1;
 		switch (input)
 		{
 			case 1:
-				Console.WriteLine("");
+				Console.WriteLine("You have purchased");
 				//Thread.Sleep(2000);
 				break; //breaks out of this entire case, moving  on the next part of da code
 			case 2:
@@ -462,16 +471,20 @@ public static Player p1;
 		p1.EXPToNextLVL = 5;
 
 		//enemy stats
+		//thief
 		thief.EnemyName = "thief";
 		thief.EnemyAttack = 1;
 		thief.EnemyHealth = 4;
 		thief.EnemyMaxHP = 4;
 		thief.EnemyEXP = 3;
+		thief.EnemyGold = 4;
+		//drug addict
 		drugAddict.EnemyName = "Drug Addict";
 		drugAddict.EnemyAttack = 2;
 		drugAddict.EnemyHealth = 6;
 		drugAddict.EnemyMaxHP = 6;
 		drugAddict.EnemyEXP = 5;
+		drugAddict.EnemyGold = 7;
 
 		//index of all items in the game
 
