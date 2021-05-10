@@ -101,7 +101,7 @@ public static Player p1;
 					Console.WriteLine(deathText);
 					Thread.Sleep(2500);
 					//end game or take the player elsewhere
-					p1.PlayerHealth =+ +5;
+					p1.PlayerHealth += +5;
 					StartingRoom();					
 					//IsRunning = false;
 					break;
@@ -192,6 +192,7 @@ public static Player p1;
 
 						Console.WriteLine("After opening the PECULIAR LOCKED BOX, you discover the SMALL CRACKED BATON and place it into your inventory. You also throw the SMALL KEY away, as you doubt you'll get much usage out of it anymore.");
 						inventory2.Add("Small Cracked Baton");
+					Room1();
 					}
 					else
 					{
@@ -327,10 +328,13 @@ public static Player p1;
 		Console.WriteLine("1. Nail Bat - 50 Gold");
 		Console.WriteLine("2. Military Helmet - 40 Gold");
 		Console.WriteLine("3. Small Key - 70 Gold");
+		Console.WriteLine();
+		Console.WriteLine("");
 		//user input
 		int input = Convert.ToInt32(Console.ReadLine());
-		//condition check to move rooms
-		switch (input)
+        //condition check to move rooms
+        #region shop item stuff
+        switch (input)
 		{
 			case 1:
 				if (p1.Gold >= 50)
@@ -339,6 +343,13 @@ public static Player p1;
 					inventory2.Add("Nail Bat");
 					Console.WriteLine("You have purchased the Nail Bat. You Equip it immediately. ATK increased by 10");
 					p1.PlayerAttack += 10;
+					Console.Write("Inventory Contents: ");
+					{
+						foreach (Object obj in inventory2)
+							Console.Write("   {0}", obj);
+						Console.WriteLine();
+					}
+					Console.ReadLine();
 					Room4();
 				}
 				else
@@ -351,10 +362,39 @@ public static Player p1;
 			case 2:
 				if (p1.Gold >= 40)
 				{
-					p1.Gold -= 50;
+					p1.Gold -= 40;
 					inventory2.Add("Military Helmet");
 					Console.WriteLine("You have purchased the Military Helmet. You Equip it immediately. DEF increased by 15");
-					p1.PlayerAttack += 10;
+					p1.PlayerDef += 15;
+					Console.Write("Inventory Contents: ");
+					{
+						foreach (Object obj in inventory2)
+							Console.Write("   {0}", obj);
+						Console.WriteLine();
+					}
+					Console.ReadLine();
+					Room4();
+				}
+				else
+				{
+					Console.WriteLine(yourePoor);
+					Room4();
+				}
+				break;
+			case 3:
+				if (p1.Gold >= 70)
+				{
+					p1.Gold -= 70;
+					inventory2.Add("Small Key");
+					Console.WriteLine("You have purchased the Small Key. You shove the cold, slightly rusted key into your pocket as the shopkeeper gives you a false, plastered on grin after you've handed him your money. ");
+					Console.WriteLine("");
+					Console.Write("Inventory Contents: ");
+					{
+						foreach (Object obj in inventory2)
+							Console.Write("   {0}", obj);
+						Console.WriteLine();
+					}
+					Console.ReadLine();
 					Room4();
 				}
 				else
@@ -367,8 +407,9 @@ public static Player p1;
 				Console.WriteLine("Invalid entry, try again.");
 				break;
 		}
-	}
-	public static void Room5()
+        #endregion
+    }
+    public static void Room5()
 	{
 		//description of room
 		Console.WriteLine("");
@@ -378,24 +419,25 @@ public static Player p1;
 		Console.WriteLine("Suddenly, the skittering grows louder and louder until you are face to face with a colossal figure. It seems to be some sort of gigantic rat, it's body covered in countless calluses, dried blood splatters, scars and scabs. Seems like it sees you as nothing more than another meal...");
 		Console.WriteLine("");
 		Thread.Sleep(7000);
-		Combat(giantRat);		
+		Combat(giantRat);
+
+		p1.PlayerAttack += 10;
+		p1.PlayerDef += 10;
+		Console.WriteLine("");
+		Console.WriteLine("The rat lets out a cacophonic screech before collapsing to the ground, cold and lifeless. As you approach the fresh corpse, still unsure of your safety after this battle, you notice a mysterious briefcase wedged in an unusual viscous pile which catches your attention instantly. Without a second thought, you open the briefcase, revealing a syringe containing a strange, glowing liquid. 'Looks interesting, might help out.' After injecting yourself in an attempt to get as much of an edge against any enemies as possible, you feel a deep, powerful energy filling your body as you nearly faint from the sensation. Your ATK and DEF have both increased by 10. Nothing else to do here, now.");
 
 		//player options
-		Console.WriteLine("1. ");
-		Console.WriteLine("2. ");
-		Console.WriteLine("3. ");
+		Console.WriteLine("1. Climb out of a nearby manhole");
 		//user input
 		int input = Convert.ToInt32(Console.ReadLine());
 		//condition check to move rooms
 		switch (input)
 		{
 			case 1:
-				Console.WriteLine("");
+				Console.WriteLine("You proceed to locate and exit through a nearby manhole, pushing the heavy cover asside and emerging onto the city streets once again...");
+				Room1();
 				//Thread.Sleep(2000);
 				break; //breaks out of this entire case, moving  on the next part of da code
-			case 2:
-				Console.WriteLine("");
-				break;
 			default:
 				Console.WriteLine("Invalid entry, try again.");
 				break;
@@ -404,12 +446,11 @@ public static Player p1;
 	public static void Room6()
 	{
 		//description of room
-		Console.WriteLine("");
+		Console.WriteLine("You are now in the park. This place is practically a nesting ground for thieves who crave upon the innocents who walk past this park. What will you do?");
 
 		//player options
-		Console.WriteLine("1. ");
-		Console.WriteLine("2. ");
-		Console.WriteLine("3. ");
+		Console.WriteLine("1. Fight thieves");
+		Console.WriteLine("2. Return to the train station");
 		//user input
 		int input = Convert.ToInt32(Console.ReadLine());
 		//condition check to move rooms
@@ -508,6 +549,7 @@ public static Player p1;
 
 	public static void Main()
 	{
+
 		//player stats
 		p1.PlayerAttack = 2;
 		p1.PlayerHealth = 10;
@@ -516,7 +558,7 @@ public static Player p1;
 		p1.LVL = 1;
 		p1.EXP = 0;
 		p1.EXPToNextLVL = 5;
-		p1.Gold = 0;
+		p1.Gold = 999;
 
 		//enemy stats
 		//thief
