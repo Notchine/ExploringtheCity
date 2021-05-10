@@ -8,6 +8,7 @@ public class Program
 
 	public static string yourePoor = "You can't afford this item.";
 	public static bool IsRunning = true;
+	public static bool ratDeath = false;
 	//public static string[] inventory = new string[10];
 	public static ArrayList inventory2 = new ArrayList();
 	public static bool thiefSpawn = true;
@@ -107,10 +108,14 @@ public static Player p1;
 				Console.WriteLine("Reamining Enemy HP: " + enemy.EnemyHealth);
 				Thread.Sleep(500);
 
-				p1.PlayerHealth -= enemy.EnemyAttack + p1.PlayerDef;
+				p1.PlayerHealth -= enemy.EnemyAttack - p1.PlayerDef;
 				Console.WriteLine("Remaining Player HP: " + p1.PlayerHealth);
 				Thread.Sleep(500);
-
+				if (p1.PlayerHealth >= p1.PlayerMaxHP)
+                {
+					p1.PlayerHealth = p1.PlayerMaxHP;
+                }
+					
 
 				if (p1.PlayerHealth <= 0)
 				{
@@ -215,14 +220,16 @@ public static Player p1;
 		Console.WriteLine(" ");
 		Console.WriteLine("You are now standing in the middle of the busy sidewalk of the city, the faceless crowd pushing and shoving past you. You notice a PECULIAR LOCKED BOX chained shut which has a small keyhole in front.");
 		Console.WriteLine(" ");
-		//player options
-		Console.WriteLine("1. Investigate the PECULIAR LOCKED BOX");
-		Console.WriteLine("2. Return to the alleyway");
-		Console.WriteLine("3. Continue down the street.");
-		Console.WriteLine(" ");
+		if (inventory2.Contains("Small Crowbar"))
+		{
+			//player options
+			Console.WriteLine("1. Investigate the PECULIAR LOCKED BOX");
+			Console.WriteLine("2. Return to the alleyway");
+			Console.WriteLine("3. Continue down the street.");
+			Console.WriteLine("4. investigate manhole");
 
-		//user input
-		int input = Convert.ToInt32(Console.ReadLine());
+			//user input
+			int input = Convert.ToInt32(Console.ReadLine());
 			//condition check to move rooms
 			switch (input)
 			{
@@ -237,11 +244,67 @@ public static Player p1;
 						Console.Write("Inventory Contents: ");
 						{
 							foreach (Object obj in inventory2)
-							Console.Write("   {0}", obj);
+								Console.Write("   {0}", obj);
 							Console.WriteLine();
 						}
-					Console.ReadLine();
+						Console.ReadLine();
+						Room1();
+					}
+					else
+					{
+						Console.WriteLine("It seems to be chained shut and cannot be opened right now.");
+						Console.WriteLine();
+						Room1();
+					}
+					break; //breaks out of this entire case, moving  on the next part of da code
+				case 2:
+					Console.WriteLine("You turn around and begin walking towards the alleyway you were previously in.");
+					StartingRoom();
+					break;
+				case 3:
+					Console.WriteLine("You make your way down the city streets...");
+					Room2();
+					break;
+				case 4:
+					Console.WriteLine("You pry open the manhole cover and decend into the darkness below...");
+					Thread.Sleep(1500);
+					Room5();
+					break;
+				default:
+					Console.WriteLine("Invalid entry, try again.");
 					Room1();
+					break;
+			}
+		}
+		else 
+		{
+			//player options
+			Console.WriteLine("1. Investigate the PECULIAR LOCKED BOX");
+			Console.WriteLine("2. Return to the alleyway");
+			Console.WriteLine("3. Continue down the street.");
+			Console.WriteLine(" ");
+
+			//user input
+			int input = Convert.ToInt32(Console.ReadLine());
+			//condition check to move rooms
+			switch (input)
+			{
+				case 1:
+					if (inventory2.Contains("Small Key"))
+					{
+						Console.WriteLine("After unlocking the PECULIAR LOCKED BOX, the oversized padlock as well as the chains tightly wrapped around it thud to the ground, generating a sound so loud it could be heard even beyond the sounds of the bustling city streets.");
+
+						Console.WriteLine("After opening the PECULIAR LOCKED BOX, you discover the SMALL CRACKED BATON and equip it immediately. ATK increased by 15. You also throw the SMALL KEY away, as you doubt you'll get much usage out of it anymore.");
+						p1.PlayerAttack += 15;
+						inventory2.Add("Small Cracked Baton");
+						Console.Write("Inventory Contents: ");
+						{
+							foreach (Object obj in inventory2)
+								Console.Write("   {0}", obj);
+							Console.WriteLine();
+						}
+						Console.ReadLine();
+						Room1();
 					}
 					else
 					{
@@ -260,9 +323,13 @@ public static Player p1;
 					break;
 				default:
 					Console.WriteLine("Invalid entry, try again.");
+					Room1();
 					break;
 			}
 		}
+
+
+	}
 
 	public static void Room2()
 	{
@@ -305,12 +372,13 @@ public static Player p1;
 					break;
 				default:
 					Console.WriteLine("Invalid entry, try again.");
+					Room2();
 					break;
 			}
 		}
 		else if (blackMarketKnowledge == true)
 		{
-			Console.WriteLine("4. Descend to the black market");
+			Console.WriteLine("5. Descend to the black market");
 			//user input
 			int input = Convert.ToInt32(Console.ReadLine());
 			//condition check to move rooms
@@ -328,11 +396,18 @@ public static Player p1;
 					Console.WriteLine("You approach the store door, push it open, and begin to speak with the cashier...");
 					break;
 				case 4:
+					Console.WriteLine("As you walk past the drug addicts, one of them gets up and approaches you, slowly reaching for a knife which they had concealed in their clothes...");
+					Thread.Sleep(1500);
+					Combat(drugAddict);
+					Room2();
+					break;
+				case 5:
 					Console.WriteLine("You carefully step through a secluded entrance you previously did not notice, descending deeper into the shopping district away from the bustling humanity behind you...");
 					Room8(); //this is gonna be the black market
 					break;
 				default:
 					Console.WriteLine("Invalid entry, try again.");
+					Room2();
 					break;
 			}
 		}
@@ -365,9 +440,11 @@ public static Player p1;
 				break;
 			case 3:
 				Console.WriteLine("You make your way back to the abandoned school...");
+				Room7();
 				break;
 			default:
 				Console.WriteLine("Invalid entry, try again.");
+				Room3();
 				break;
 		}
 	}
@@ -386,8 +463,9 @@ public static Player p1;
 		Console.WriteLine("2. Military Helmet - 40 Gold");
 		Console.WriteLine("3. Small Key - 70 Gold");
 		Console.WriteLine("4. First Aid Kit - 20 Gold");
+		Console.WriteLine("5. Small Crowbar - 50");
 		Console.WriteLine();
-		Console.WriteLine("5. Exit the store");
+		Console.WriteLine("6. Exit the store");
 		Console.WriteLine("");
 		//user input
 		int input = Convert.ToInt32(Console.ReadLine());
@@ -471,13 +549,43 @@ public static Player p1;
 					Console.ReadLine();
 					Room4();
 				}
+				else
+				{
+					Console.WriteLine(yourePoor);
+					Room4();
+				}
 				break;
 			case 5:
+				if (p1.Gold >= 50)
+				{
+					p1.Gold -= 50;
+					inventory2.Add("Small Crowbar");
+					Console.WriteLine("You have purchased the Small Crowbar. You shove the cold, heavy tool into your inventory and move on.");
+					Console.WriteLine("");
+					Console.Write("Inventory Contents: ");
+					{
+						foreach (Object obj in inventory2)
+							Console.Write("   {0}", obj);
+						Console.WriteLine();
+					}
+
+					Console.ReadLine();
+					Room4();
+				}
+				else
+				{
+					Console.WriteLine(yourePoor);
+					Room4();
+				}
+				break;
+			case 6:
 				Console.WriteLine("You give the shop keeper a small wave goodbye before exiting the store, noticing their pasted on smile quickly fade from the corner of your eye...");
+				Thread.Sleep(2000);
 				Room2();
 				break;
 			default:
 				Console.WriteLine("Invalid entry, try again.");
+				Room4();
 				break;
 		}
         #endregion
@@ -485,20 +593,28 @@ public static Player p1;
     public static void Room5()
 	{
 		//description of room
-		Console.Clear();
-		Console.WriteLine("You are now standing in a disgusting sewer. There is an overwhelmingly horrid stench filling the area and scittering can be heard in all directions...");
-		Console.WriteLine("");
-		Thread.Sleep(5000);
-		Console.WriteLine("Suddenly, the skittering grows louder and louder until you are face to face with a colossal figure. It seems to be some sort of gigantic rat, it's body covered in countless calluses, dried blood splatters, scars and scabs. Seems like it sees you as nothing more than another meal...");
-		Console.WriteLine("");
-		Thread.Sleep(7000);
-		Combat(giantRat);
+		if (ratDeath == false)
+		{
+			Console.Clear();
+			Console.WriteLine("You are now standing in a disgusting sewer. There is an overwhelmingly horrid stench filling the area and scittering can be heard in all directions...");
+			Console.WriteLine("");
+			Thread.Sleep(5000);
+			Console.WriteLine("Suddenly, the skittering grows louder and louder until you are face to face with a colossal figure. It seems to be some sort of gigantic rat, it's body covered in countless calluses, dried blood splatters, scars and scabs. Seems like it sees you as nothing more than another meal...");
+			Console.WriteLine("");
+			Thread.Sleep(7000);
+			Combat(giantRat);
 
-		p1.PlayerAttack += 10;
-		p1.PlayerDef += 10;
-		Console.WriteLine("");
-		Console.WriteLine("The rat lets out a cacophonic screech before collapsing to the ground, cold and lifeless. As you approach the fresh corpse, still unsure of your safety after this battle, you notice a mysterious briefcase wedged in an unusual viscous pile which catches your attention instantly. Without a second thought, you open the briefcase, revealing a syringe containing a strange, glowing liquid. 'Looks interesting, might help out.' After injecting yourself in an attempt to get as much of an edge against any enemies as possible, you feel a deep, powerful energy filling your body as you nearly faint from the sensation. Your ATK and DEF have both increased by 10. Nothing else to do here, now.");
-
+			p1.PlayerAttack += 10;
+			p1.PlayerDef += 10;
+			Console.WriteLine("");
+			Console.WriteLine("The rat lets out a cacophonic screech before collapsing to the ground, cold and lifeless. As you approach the fresh corpse, still unsure of your safety after this battle, you notice a mysterious briefcase wedged in an unusual viscous pile which catches your attention instantly. Without a second thought, you open the briefcase, revealing a syringe containing a strange, glowing liquid. 'Looks interesting, might help out.' After injecting yourself in an attempt to get as much of an edge against any enemies as possible, you feel a deep, powerful energy filling your body as you nearly faint from the sensation. Your ATK and DEF have both increased by 10. Nothing else to do here, now.");
+		}
+		else if (ratDeath == true)
+        {
+			Console.WriteLine("There is nothing to do here. You climb back out of the manhole.");
+			Room1();
+			Thread.Sleep(1500);
+        }
 		//player options
 		Console.WriteLine("1. Climb out of a nearby manhole");
 		//user input
@@ -513,6 +629,7 @@ public static Player p1;
 				break; //breaks out of this entire case, moving  on the next part of da code
 			default:
 				Console.WriteLine("Invalid entry, try again.");
+				Room5();
 				break;
 		}
 	}
@@ -533,6 +650,7 @@ public static Player p1;
 			case 1:
 				Console.WriteLine("You approach a group of thieves who see you as nothing more than easy prey for them.");
 				Combat(thieves);
+				Room6();
 				//Thread.Sleep(2000);
 				break; //breaks out of this entire case, moving  on the next part of da code
 			case 2:
@@ -542,6 +660,7 @@ public static Player p1;
 				break;
 			default:
 				Console.WriteLine("Invalid entry, try again.");
+				Room6();
 				break;
 		}
 	}
@@ -572,6 +691,10 @@ public static Player p1;
 					Console.WriteLine("You pick up a nearby gang member by the cuff of his shirt, questioning him relentlessly on any ways to escape the city. 'I.. I dunno! The city's been locked down for a long while, so theres not really a way out! Unless... you took the route through the black market of course!");
 					Console.WriteLine("");
 					Console.WriteLine("After questioning him more and more about this so called 'black market', you learn of it's entrance which is located just inside of the ");
+					Console.ReadLine();
+					blackMarketKnowledge = true;
+					secretBoost = true;
+					Room7();
 					//Thread.Sleep(2000);
 					break; //breaks out of this entire case, moving  on the next part of da code
 				case 2:
@@ -580,6 +703,7 @@ public static Player p1;
 					break;
 				default:
 					Console.WriteLine("Invalid entry, try again.");
+					Room7();
 					break;
 			}
 		}
@@ -600,6 +724,7 @@ public static Player p1;
 					break;
 				default:
 					Console.WriteLine("Invalid entry, try again.");
+					Room7();
 					break;
 			}
 		}
@@ -628,14 +753,85 @@ public static Player p1;
 		switch (input)
 		{
 			case 1:
-				Console.WriteLine("");
-				//Thread.Sleep(2000);
+				if (p1.Gold >= 500)
+				{
+					p1.Gold -= 500;
+					inventory2.Add("Nail Bat");
+					Console.WriteLine("You have purchased the Tactical Shotgun. You Equip it immediately. ATK increased by 25");
+					p1.PlayerAttack += 25;
+					Console.Write("Inventory Contents: ");
+					{
+						foreach (Object obj in inventory2)
+							Console.Write("   {0}", obj);
+						Console.WriteLine();
+					}
+					Console.ReadLine();
+					Room8();
+				}
+				else
+				{
+					Console.WriteLine(yourePoor);
+					Room8();
+				}
 				break; //breaks out of this entire case, moving  on the next part of da code
 			case 2:
-				Console.WriteLine("");
+				if (p1.Gold >= 100)
+				{
+					p1.Gold -= 100;
+					Console.WriteLine("You have purchased the Odd-Looking Red Syringe. After injecting yourself with it almost immediately, you feel a change within. ATK permanently increased by 10");
+					p1.PlayerAttack += 10;
+					Console.ReadLine();
+					Room8();
+				}
+				else
+				{
+					Console.WriteLine(yourePoor);
+					Room8();
+				}
+				break;
+			case 3:
+				if (p1.Gold >= 100)
+				{
+					p1.Gold -= 100;
+					Console.WriteLine("You have purchased the Odd-Looking Red Syringe. After injecting yourself with it almost immediately, you feel a change within. DEF permanently increased by 5");
+					p1.PlayerDef += 5;
+					Console.ReadLine();
+					Room8();
+				}
+				else
+				{
+					Console.WriteLine(yourePoor);
+					Room8();
+				}
+				break;
+			case 4:
+				if (p1.Gold >= 20)
+				{
+					p1.Gold -= 20;
+					Console.WriteLine("You apply the first aid kit to yourself, healing yourself up to a suitable level...");
+					p1.PlayerHealth = p1.PlayerMaxHP;
+					Console.ReadLine();
+					Room8();
+				}
+				else
+				{
+					Console.WriteLine(yourePoor);
+					Room8();
+				}
+				break;
+			case 5:
+				Console.WriteLine("You exit back into the shopping district...");
+				Thread.Sleep(1000);
+				Room2();
+				break;
+			case 6:
+				Console.WriteLine("You exit into the city outskirts...");
+				Thread.Sleep(1000);
+				Room9();
 				break;
 			default:
 				Console.WriteLine("Invalid entry, try again.");
+				Room8();
 				break;
 		}
 	}
@@ -643,29 +839,16 @@ public static Player p1;
 	{
 		//description of room
 		Console.Clear();
-		Console.WriteLine("");
-		Console.WriteLine("");
+		Console.WriteLine("You stand before the outskirts of the city, noticing the bright lights flash brightly and sirens blare behind you. Ahead of you is nothing but a straight, open road into god knows where, but it's a better place to be than the city. As you take a step foward, you are immediately tapped on the shoulder by a man in a police uniform who promptly but directly requires for you to return to the city immediately, before he has to call in backup. You've already come this far, and you aren't gonna let some cop stop you right before you finally escape.");
+		Console.ReadLine();
 
-		//player options
-		Console.WriteLine("1. ");
-		Console.WriteLine("2. ");
-		Console.WriteLine("3. ");
-		//user input
-		int input = Convert.ToInt32(Console.ReadLine());
-		//condition check to move rooms
-		switch (input)
-		{
-			case 1:
-				Console.WriteLine("");
-				//Thread.Sleep(2000);
-				break; //breaks out of this entire case, moving  on the next part of da code
-			case 2:
-				Console.WriteLine("");
-				break;
-			default:
-				Console.WriteLine("Invalid entry, try again.");
-				break;
-		}
+		Combat(policeOfficer);
+
+		Console.WriteLine("After beating the police officer to an inch of his life, you realised that deep down, this city's dark influence has already began to creep on your psyche, causing you to crave violence and other depraved acts. You have to get away. You turn your back to the bleeding officer of the law and run off down the endless road, unsure of where it will lead you.");
+		Console.WriteLine();
+		Console.WriteLine("THE END.");
+		Console.ReadLine();
+
 	}
 
 	public static void Main()
