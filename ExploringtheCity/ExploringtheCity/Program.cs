@@ -5,7 +5,9 @@ using System.Collections;
 
 public class Program
 {
+	Random rand;
 
+	public static string yourePoor = "You can't afford this item.";
 	public static bool IsRunning = true;
 	//public static string[] inventory = new string[10];
 	public static ArrayList inventory2 = new ArrayList();
@@ -15,6 +17,7 @@ public class Program
 	{
 		public int PlayerHealth;
 		public int PlayerMaxHP;
+		public int PlayerDef;
 		public int PlayerAttack;
 		public int LVL;
 		public int EXPToNextLVL;
@@ -45,6 +48,8 @@ public static Player p1;
 	}
 	public static Enemy thief;
 	public static Enemy drugAddict;
+	public static Enemy giantRat;
+
 
 	public struct Weapon
 	{
@@ -117,9 +122,16 @@ public static Player p1;
 		Console.WriteLine("1. Walk out the alleyway");
 		Console.WriteLine("2. Stay in the alleyway");
 		Console.WriteLine(" ");
-
 		//user input
 		int input = Convert.ToInt32(Console.ReadLine());
+
+		//		string rawInput;
+		//		do
+		//		{
+		//			 rawInput = Console.ReadLine();
+		//		}
+		//		while (Int32.TryParse(rawInput, out _));
+		//		int input = int.Parse(rawInput);
 		//condition check to move rooms
 		switch (input)
 		{
@@ -232,6 +244,7 @@ public static Player p1;
 					break;
 				case 3:
 					Console.WriteLine("You approach the store door, push it open, and begin to speak with the cashier...");
+					Room4();
 					break;
 				default:
 					Console.WriteLine("Invalid entry, try again.");
@@ -307,22 +320,48 @@ public static Player p1;
 		Console.WriteLine("You are now in the store. This shop is mostly empty, besides the singular shopkeeper who welcomes you with a smile and suggests that you take a thorough glance through his wares for anything that peeks your interest.");
 		Console.WriteLine(" ");
 
-		//player options
+		//player options	
+		Console.WriteLine("(Select which item you wish to purchase before selecting the last option to exit the store.)");
 		Console.WriteLine("*SHOP INVENTORY*");
 
-		Console.WriteLine("1. ");
-		Console.WriteLine("2. ");
+		Console.WriteLine("1. Nail Bat - 50 Gold");
+		Console.WriteLine("2. Military Helmet - 40 Gold");
+		Console.WriteLine("3. Small Key - 70 Gold");
 		//user input
 		int input = Convert.ToInt32(Console.ReadLine());
 		//condition check to move rooms
 		switch (input)
 		{
 			case 1:
-				Console.WriteLine("You have purchased");
+				if (p1.Gold >= 50)
+				{
+					p1.Gold -= 50;
+					inventory2.Add("Nail Bat");
+					Console.WriteLine("You have purchased the Nail Bat. You Equip it immediately. ATK increased by 10");
+					p1.PlayerAttack += 10;
+					Room4();
+				}
+				else
+                {
+					Console.WriteLine(yourePoor);
+					Room4();
+				}
 				//Thread.Sleep(2000);
 				break; //breaks out of this entire case, moving  on the next part of da code
 			case 2:
-				Console.WriteLine("");
+				if (p1.Gold >= 40)
+				{
+					p1.Gold -= 50;
+					inventory2.Add("Military Helmet");
+					Console.WriteLine("You have purchased the Military Helmet. You Equip it immediately. DEF increased by 15");
+					p1.PlayerAttack += 10;
+					Room4();
+				}
+				else
+				{
+					Console.WriteLine(yourePoor);
+					Room4();
+				}
 				break;
 			default:
 				Console.WriteLine("Invalid entry, try again.");
@@ -333,6 +372,13 @@ public static Player p1;
 	{
 		//description of room
 		Console.WriteLine("");
+		Console.WriteLine("You are now standing in a disgusting sewer. There is an overwhelmingly horrid stench filling the area and scittering can be heard in all directions...");
+		Console.WriteLine("");
+		Thread.Sleep(5000);
+		Console.WriteLine("Suddenly, the skittering grows louder and louder until you are face to face with a colossal figure. It seems to be some sort of gigantic rat, it's body covered in countless calluses, dried blood splatters, scars and scabs. Seems like it sees you as nothing more than another meal...");
+		Console.WriteLine("");
+		Thread.Sleep(7000);
+		Combat(giantRat);		
 
 		//player options
 		Console.WriteLine("1. ");
@@ -466,9 +512,11 @@ public static Player p1;
 		p1.PlayerAttack = 2;
 		p1.PlayerHealth = 10;
 		p1.PlayerMaxHP = 10;
+		p1.PlayerDef = 0;
 		p1.LVL = 1;
 		p1.EXP = 0;
 		p1.EXPToNextLVL = 5;
+		p1.Gold = 0;
 
 		//enemy stats
 		//thief
@@ -485,7 +533,13 @@ public static Player p1;
 		drugAddict.EnemyMaxHP = 6;
 		drugAddict.EnemyEXP = 5;
 		drugAddict.EnemyGold = 7;
-
+		//DA GIANT EVIL ENEMY RAT!!!!!!!!!!!!!!
+		giantRat.EnemyName = "The Giant Rat";
+		giantRat.EnemyAttack = 5;
+		drugAddict.EnemyHealth = 50;
+		drugAddict.EnemyMaxHP = 50;
+		drugAddict.EnemyEXP = 100;
+		drugAddict.EnemyGold = 150;
 		//index of all items in the game
 
 		//inventory[0] = "Small Key";
