@@ -86,7 +86,9 @@ public static Player p1;
 				Console.ReadLine();
 				if (p1.EXP >= p1.EXPToNextLVL)
                 {
-
+					p1.LVL++;
+					p1.EXPToNextLVL = Math.Round(p1.EXPToNextLVL*1.2);
+					p1.EXP = 0;
                 }
 				Console.Clear();
 				//write Exp earned and whether they level up maybe
