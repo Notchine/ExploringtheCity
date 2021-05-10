@@ -4,8 +4,7 @@ using System.Threading;
 using System.Collections;
 
 public class Program
-{
-	Random rand;
+{ 
 
 	public static string yourePoor = "You can't afford this item.";
 	public static bool IsRunning = true;
@@ -51,7 +50,8 @@ public static Player p1;
 	public static Enemy drugAddict;
 	public static Enemy thieves;
 	public static Enemy giantRat;
-
+	public static Enemy gangsters;
+	public static Enemy policeOfficer;
 
 	public struct Weapon
 	{
@@ -87,9 +87,15 @@ public static Player p1;
 				if (p1.EXP >= p1.EXPToNextLVL)
                 {
 					p1.LVL++;
-			        p1.EXPToNextLVL = (p1.EXPToNextLVL)Math.Round(1.2);
+					p1.PlayerAttack++;
+					p1.PlayerMaxHP = (int)Math.Round(p1.PlayerMaxHP * 1.2);
+					p1.EXPToNextLVL = (int)Math.Round(p1.EXPToNextLVL * 1.2);
 					p1.EXP = 0;
-                }
+					Console.WriteLine("Level Up! You are now level " + p1.LVL);
+					Console.WriteLine("ATK is now " + p1.PlayerAttack);
+					Console.WriteLine("MaxHP is now " + p1.PlayerMaxHP);
+					Console.ReadLine();
+				}
 				Console.Clear();
 				//write Exp earned and whether they level up maybe
 				enemy.EnemyHealth = +enemy.EnemyMaxHP;
@@ -101,7 +107,7 @@ public static Player p1;
 				Console.WriteLine("Reamining Enemy HP: " + enemy.EnemyHealth);
 				Thread.Sleep(500);
 
-				p1.PlayerHealth -= enemy.EnemyAttack;
+				p1.PlayerHealth -= enemy.EnemyAttack + p1.PlayerDef;
 				Console.WriteLine("Remaining Player HP: " + p1.PlayerHealth);
 				Thread.Sleep(500);
 
@@ -111,7 +117,6 @@ public static Player p1;
 					Console.WriteLine(deathText);
 					Console.WriteLine("(Press enter to respawn at the starting area...)");
 					Console.ReadLine();
-					Thread.Sleep(2500);
 					//end game or take the player elsewhere
 					p1.PlayerHealth += +5;
 					StartingRoom();					
@@ -196,7 +201,7 @@ public static Player p1;
         {
 			Console.WriteLine("As you return to the starting area, you notice some strange syringe jutting out of a toppled over garbage can behind you. The strange, glowing liquid within it beckons you to use it, and your body moves unconsciously towards the syringe, picking it up and injecting it into your arm. Instantly, you feel yourself become much, much more powerful than before. ATK increased by 10, DEF increased by 10.");
 			p1.PlayerAttack += 10;
-			p1.PlayerDef += 10;
+			p1.PlayerMaxHP += 10;
 			Console.ReadLine();
 			secretBoost = false;
 			StartingRoom();
@@ -263,13 +268,14 @@ public static Player p1;
 	{
 		//description of room
 		Console.Clear();
-		Console.WriteLine("You are now in the shopping district. This place seems even more bustling than the city streets, with even more people rushing past you as you try to find your way through the densely packed hoard.");
+		Console.WriteLine("You are now in the shopping district. This place seems even more bustling than the city streets, with even more people rushing past you as you try to find your way through the densely packed hoard. You can spot a small group of drug addicts resting in a corner, looking around with dazed glances.");
 		Console.WriteLine(" ");
 		//player options
 		Console.WriteLine("1. Walk to the city streets");
 		Console.WriteLine("2. Walk to the train station");
 		Console.WriteLine("3. Enter the store");
-		Console.WriteLine(" ");
+		Console.WriteLine("4. Battle one of the drug addicts");
+		Console.WriteLine("");
 		//codeword for entering black market is "the stallion is shiny" ACTUALLY NO THIS IS DUMB JUST HAVE IT BE ENABLED BY BEATING THE DUDES IN THE ABANDONED SCHOOL I KNOW YOU CAN JUST HAVE IT CHECK FOR A SPECIFIC STATEMENT BUT A BOOLEAN IS INFINITELY EASIER YOU DUMMY
 		//use different switches, one for before you discover the black market and one for after. Use a static boolean and set it to true when youre ready to enter the black market.
 		if (blackMarketKnowledge == false)
@@ -290,6 +296,12 @@ public static Player p1;
 				case 3:
 					Console.WriteLine("You approach the store door, push it open, and begin to speak with the cashier...");
 					Room4();
+					break;
+				case 4:
+					Console.WriteLine("As you walk past the drug addicts, one of them gets up and approaches you, slowly reaching for a knife which they had concealed in their clothes...");
+					Thread.Sleep(1500);
+					Combat(drugAddict);
+					Room2();
 					break;
 				default:
 					Console.WriteLine("Invalid entry, try again.");
@@ -373,7 +385,9 @@ public static Player p1;
 		Console.WriteLine("1. Nail Bat - 50 Gold");
 		Console.WriteLine("2. Military Helmet - 40 Gold");
 		Console.WriteLine("3. Small Key - 70 Gold");
-		Console.WriteLine("4. Exit the store");
+		Console.WriteLine("4. First Aid Kit - 20 Gold");
+		Console.WriteLine();
+		Console.WriteLine("5. Exit the store");
 		Console.WriteLine("");
 		//user input
 		int input = Convert.ToInt32(Console.ReadLine());
@@ -449,6 +463,16 @@ public static Player p1;
 				}
 				break;
 			case 4:
+				if (p1.Gold >= 20)
+				{
+					p1.Gold -= 20;
+					Console.WriteLine("You apply the first aid kit to yourself, healing yourself up to a suitable level...");
+					p1.PlayerHealth = p1.PlayerMaxHP;
+					Console.ReadLine();
+					Room4();
+				}
+				break;
+			case 5:
 				Console.WriteLine("You give the shop keeper a small wave goodbye before exiting the store, noticing their pasted on smile quickly fade from the corner of your eye...");
 				Room2();
 				break;
@@ -512,7 +536,9 @@ public static Player p1;
 				//Thread.Sleep(2000);
 				break; //breaks out of this entire case, moving  on the next part of da code
 			case 2:
-				Console.WriteLine("");
+				Console.WriteLine("You turn back and return to the train station...");
+				Thread.Sleep(1000);
+				Room3();
 				break;
 			default:
 				Console.WriteLine("Invalid entry, try again.");
@@ -523,41 +549,79 @@ public static Player p1;
 	{
 		//description of room
 		Console.Clear();
-		Console.WriteLine("");
+		Console.WriteLine("As you enter this area, you are suddenly cornered by ");
+		Console.WriteLine("You are now standing infront of the abandoned school. This old primary school building used to be a place of education, but the passing years have changed it to the point where it's nothing more than a hideout for a massive collection of gangmembers. Even local law enforcement is too afraid to enter this den of crime and destruction. Entering this building would be a deathwish, considering how far you are outnumbered by the gangmembers. Unless you were strong enough, of course...");
 		Console.WriteLine("");
 
 		//player options
-		Console.WriteLine("1. ");
-		Console.WriteLine("2. ");
-		Console.WriteLine("3. ");
+		Console.WriteLine("1. Enter the abandoned school building");
+		Console.WriteLine("2. Return to the train station");
 		//user input
-		int input = Convert.ToInt32(Console.ReadLine());
-		//condition check to move rooms
-		switch (input)
+		if (blackMarketKnowledge == false)
 		{
-			case 1:
-				Console.WriteLine("");
-				//Thread.Sleep(2000);
-				break; //breaks out of this entire case, moving  on the next part of da code
-			case 2:
-				Console.WriteLine("");
-				break;
-			default:
-				Console.WriteLine("Invalid entry, try again.");
-				break;
+			int input = Convert.ToInt32(Console.ReadLine());
+			//condition check to move rooms
+			switch (input)
+			{
+				case 1:
+					Console.WriteLine("You yank open the door to the building, coming face to face with the countless confused faces of the gangmembers within. They don't even begin to question your motives, and immediately rush towards you in an attempt to overwhelm you.");
+					Combat(gangsters);
+					Console.Clear();
+					Console.WriteLine("After a climactic battle, you stand amongst the countless brused and tired bodies of the once proud gangsters who, while previously looked upon you with nothing but bloodlust, felt a deep, consuming fear as they even glance up at you.");
+					Console.WriteLine();
+					Console.WriteLine("You pick up a nearby gang member by the cuff of his shirt, questioning him relentlessly on any ways to escape the city. 'I.. I dunno! The city's been locked down for a long while, so theres not really a way out! Unless... you took the route through the black market of course!");
+					Console.WriteLine("");
+					Console.WriteLine("After questioning him more and more about this so called 'black market', you learn of it's entrance which is located just inside of the ");
+					//Thread.Sleep(2000);
+					break; //breaks out of this entire case, moving  on the next part of da code
+				case 2:
+					Console.WriteLine("You decide it's a better idea to simply return to the train station then attempt to even interact with anyone inside that building...");
+					Room3();
+					break;
+				default:
+					Console.WriteLine("Invalid entry, try again.");
+					break;
+			}
+		}
+		else if (blackMarketKnowledge == true)
+        {
+			int input = Convert.ToInt32(Console.ReadLine());
+			//condition check to move rooms
+			switch (input)
+			{
+				case 1:
+					Console.WriteLine("There's no real reason for you to return to this area, so you decide otherwise.");
+					Room7();
+					//Thread.Sleep(2000);
+					break; //breaks out of this entire case, moving  on the next part of da code
+				case 2:
+					Console.WriteLine("You walk back to the train station...");
+					Room3();
+					break;
+				default:
+					Console.WriteLine("Invalid entry, try again.");
+					break;
+			}
 		}
 	}
 	public static void Room8()
 	{
 		//description of room
 		Console.Clear();
-		Console.WriteLine("");
+		Console.WriteLine("You are now standing in the black market. Countless rickety stands selling illegal and unethical items stand tall within this small, claustrophobic hallway. Across the vast expance of merchants, you spot the exit to the city outskirts you heard so much about from that one gangster. Wouldn't hurt to do a little shopping before leaving, though.");
 		Console.WriteLine("");
 
 		//player options
-		Console.WriteLine("1. ");
-		Console.WriteLine("2. ");
-		Console.WriteLine("3. ");
+		Console.WriteLine("(Select which item you wish to purchase before selecting the options to either exit the black market through the shopping district or the city outskirts.)");
+		Console.WriteLine("*BLACK MARKET INVENTORY*");
+
+		Console.WriteLine("1. Tactical Shotgun - 500");
+		Console.WriteLine("2. Odd-Looking Red Syringe - 100");
+		Console.WriteLine("3. Odd-Looking Blue Syringe - 100");
+		Console.WriteLine("4. First Aid Kit - 20");
+		Console.WriteLine();
+		Console.WriteLine("5. Exit back up to the shopping district");
+		Console.WriteLine("6. Exit through to the city outskirts");
 		//user input
 		int input = Convert.ToInt32(Console.ReadLine());
 		//condition check to move rooms
@@ -609,8 +673,8 @@ public static Player p1;
 
 		//player stats
 		p1.PlayerAttack = 2;
-		p1.PlayerHealth = 10;
-		p1.PlayerMaxHP = 10;
+		p1.PlayerHealth = 15;
+		p1.PlayerMaxHP = 15;
 		p1.PlayerDef = 0;
 		p1.LVL = 1;
 		p1.EXP = 0;
@@ -623,29 +687,43 @@ public static Player p1;
 		thief.EnemyAttack = 1;
 		thief.EnemyHealth = 4;
 		thief.EnemyMaxHP = 4;
-		thief.EnemyEXP = 3;
+		thief.EnemyEXP = 5;
 		thief.EnemyGold = 4;
 		//a group of thieves
 		thieves.EnemyName = "a group of thieves";
 		thieves.EnemyAttack = 5;
 		thieves.EnemyHealth = 20;
 		thieves.EnemyMaxHP = 20;
-		thieves.EnemyEXP = 10;
+		thieves.EnemyEXP = 15;
 		thieves.EnemyGold = 30;
 		//drug addict
 		drugAddict.EnemyName = "Drug Addict";
 		drugAddict.EnemyAttack = 2;
 		drugAddict.EnemyHealth = 6;
 		drugAddict.EnemyMaxHP = 6;
-		drugAddict.EnemyEXP = 5;
+		drugAddict.EnemyEXP = 8;
 		drugAddict.EnemyGold = 7;
 		//DA GIANT EVIL ENEMY RAT!!!!!!!!!!!!!!
 		giantRat.EnemyName = "The Giant Rat";
 		giantRat.EnemyAttack = 5;
-		drugAddict.EnemyHealth = 50;
-		drugAddict.EnemyMaxHP = 50;
-		drugAddict.EnemyEXP = 100;
-		drugAddict.EnemyGold = 150;
+		giantRat.EnemyHealth = 60;
+		giantRat.EnemyMaxHP = 60;
+		giantRat.EnemyEXP = 100;
+		giantRat.EnemyGold = 150;
+		//School Gangsters
+		gangsters.EnemyName = "School Gangsters";
+		gangsters.EnemyAttack = 5;
+		gangsters.EnemyHealth = 40;
+		gangsters.EnemyMaxHP = 40;
+		gangsters.EnemyEXP = 60;
+		gangsters.EnemyGold = 120;
+		//FINAL BOSS
+		policeOfficer.EnemyName = "Police Officer";
+		policeOfficer.EnemyAttack = 7;
+		policeOfficer.EnemyHealth = 45;
+		policeOfficer.EnemyMaxHP = 45;
+		policeOfficer.EnemyEXP = 0;
+		policeOfficer.EnemyGold = 0;
 		//index of all items in the game
 
 		//inventory[0] = "Small Key";
