@@ -12,6 +12,7 @@ public class Program
 	//public static string[] inventory = new string[10];
 	public static ArrayList inventory2 = new ArrayList();
 	public static bool thiefSpawn = true;
+	public static bool secretBoost = false;
 	public static bool blackMarketKnowledge = false;
 	public struct Player
 	{
@@ -48,6 +49,7 @@ public static Player p1;
 	}
 	public static Enemy thief;
 	public static Enemy drugAddict;
+	public static Enemy thieves;
 	public static Enemy giantRat;
 
 
@@ -81,6 +83,12 @@ public static Player p1;
 				Console.WriteLine("Earned Gold: " + enemy.EnemyGold);
 				Console.WriteLine("Total Gained Experience: "+ p1.EXP);
 				Console.WriteLine("EXP to next level: " + p1.EXPToNextLVL);
+				Console.ReadLine();
+				if (p1.EXP >= p1.EXPToNextLVL)
+                {
+
+                }
+				Console.Clear();
 				//write Exp earned and whether they level up maybe
 				enemy.EnemyHealth = +enemy.EnemyMaxHP;
 				break;
@@ -99,6 +107,8 @@ public static Player p1;
 				if (p1.PlayerHealth <= 0)
 				{
 					Console.WriteLine(deathText);
+					Console.WriteLine("(Press enter to respawn at the starting area...)");
+					Console.ReadLine();
 					Thread.Sleep(2500);
 					//end game or take the player elsewhere
 					p1.PlayerHealth += +5;
@@ -110,11 +120,19 @@ public static Player p1;
 
 		}
 	}
+	//example of levelling system
+	
+	//on death{
+	//playerEXP += enemyEXP
+	//levelRequirement *= 1.2;
+	
+	//upon level up
 
+	//playerEXP = 0;
 	public static void StartingRoom()
 	{
 
-		
+		Console.Clear();
 		//description of room
 		Console.WriteLine("You are standing in a dark alley with no real recollection of how you got there. There is a faint smell of oil and old garbage surrounding you. The only exit you can see if the opening at the end of the alleyway which shines with bright, blinding streetlights.");
 		Console.WriteLine(" ");
@@ -122,8 +140,13 @@ public static Player p1;
 		Console.WriteLine("1. Walk out the alleyway");
 		Console.WriteLine("2. Stay in the alleyway");
 		Console.WriteLine(" ");
-		//user input
-		int input = Convert.ToInt32(Console.ReadLine());
+
+
+		if (secretBoost == false)
+		{
+			//user input
+			int input = Convert.ToInt32(Console.ReadLine());
+			//condition check to move rooms
 
 		//		string rawInput;
 		//		do
@@ -133,37 +156,48 @@ public static Player p1;
 		//		while (Int32.TryParse(rawInput, out _));
 		//		int input = int.Parse(rawInput);
 		//condition check to move rooms
-		switch (input)
-		{
-			case 1:
-				Console.WriteLine("You decide to exit the alleyway as there is no reason for you to remain here.");
-				IsRunning = false;
-				if (thiefSpawn == true)
-				{
-					Console.WriteLine("Suddenly, you notice shifting movements in the corner of your eye from the shadows!");
-					Console.WriteLine();
-					Thread.Sleep(1500);
-					Combat(thief);
-					thiefSpawn = false;
-					Console.WriteLine("After narrowly surviving the encounter with the thief, you quickly exit the cramped alleyway.");
-					Console.WriteLine();
-					Thread.Sleep(4000);
-					Room1();
-				}
-				else if (thiefSpawn == false)
-				{
-					Room1();
-				}
-				break; //breaks out of this entire case, moving  on the next part of da code
-			case 2:
-				Console.WriteLine("Nothing happens as you stand idly in the alleyway.");
-				StartingRoom();
-				break;
-			default:
-				Console.WriteLine("Invalid entry, try again.");
-				//send them to same room they are in
-				StartingRoom();
-				break;
+			switch (input)
+			{
+				case 1:
+					Console.WriteLine("You decide to exit the alleyway as there is no reason for you to remain here.");
+					IsRunning = false;
+					if (thiefSpawn == true)
+					{
+						Console.WriteLine("Suddenly, you notice shifting movements in the corner of your eye from the shadows!");
+						Console.WriteLine();
+						Thread.Sleep(1500);
+						Console.Clear();
+						Combat(thief);
+						thiefSpawn = false;
+						Console.WriteLine("After narrowly surviving the encounter with the thief, you quickly exit the cramped alleyway.");
+						Console.WriteLine();
+						Thread.Sleep(1500);
+						Room1();
+					}
+					else if (thiefSpawn == false)
+					{
+						Room1();
+					}
+					break; //breaks out of this entire case, moving  on the next part of da code
+				case 2:
+					Console.WriteLine("Nothing happens as you stand idly in the alleyway.");
+					StartingRoom();
+					break;
+				default:
+					Console.WriteLine("Invalid entry, try again.");
+					//send them to same room they are in
+					StartingRoom();
+					break;
+			}
+		}
+		else if (secretBoost == true)
+        {
+			Console.WriteLine("As you return to the starting area, you notice some strange syringe jutting out of a toppled over garbage can behind you. The strange, glowing liquid within it beckons you to use it, and your body moves unconsciously towards the syringe, picking it up and injecting it into your arm. Instantly, you feel yourself become much, much more powerful than before. ATK increased by 10, DEF increased by 10.");
+			p1.PlayerAttack += 10;
+			p1.PlayerDef += 10;
+			Console.ReadLine();
+			secretBoost = false;
+			StartingRoom();
 		}
 	}
 	public static void Room1()
@@ -190,8 +224,16 @@ public static Player p1;
 					{
 						Console.WriteLine("After unlocking the PECULIAR LOCKED BOX, the oversized padlock as well as the chains tightly wrapped around it thud to the ground, generating a sound so loud it could be heard even beyond the sounds of the bustling city streets.");
 
-						Console.WriteLine("After opening the PECULIAR LOCKED BOX, you discover the SMALL CRACKED BATON and place it into your inventory. You also throw the SMALL KEY away, as you doubt you'll get much usage out of it anymore.");
+						Console.WriteLine("After opening the PECULIAR LOCKED BOX, you discover the SMALL CRACKED BATON and equip it immediately. ATK increased by 15. You also throw the SMALL KEY away, as you doubt you'll get much usage out of it anymore.");
+						p1.PlayerAttack += 15;
 						inventory2.Add("Small Cracked Baton");
+						Console.Write("Inventory Contents: ");
+						{
+							foreach (Object obj in inventory2)
+							Console.Write("   {0}", obj);
+							Console.WriteLine();
+						}
+					Console.ReadLine();
 					Room1();
 					}
 					else
@@ -218,7 +260,7 @@ public static Player p1;
 	public static void Room2()
 	{
 		//description of room
-		Console.WriteLine(" ");
+		Console.Clear();
 		Console.WriteLine("You are now in the shopping district. This place seems even more bustling than the city streets, with even more people rushing past you as you try to find your way through the densely packed hoard.");
 		Console.WriteLine(" ");
 		//player options
@@ -284,7 +326,7 @@ public static Player p1;
 	public static void Room3()
 	{
 		//description of room
-		Console.WriteLine(" ");
+		Console.Clear();
 		Console.WriteLine("You are now in the train station. The large gathering of people outside seem to all be attempting to squeeze themselves in behind you, attempting to catch the train as quickly as possible. From here, you can either exit back into the shopping district, take the train to the park or take the train to the abandoned school.");
 		Console.WriteLine(" ");
 
@@ -305,9 +347,10 @@ public static Player p1;
 				break; //breaks out of this entire case, moving  on the next part of da code
 			case 2:
 				Console.WriteLine("You make your way park...");
+				Room6();
 				break;
 			case 3:
-				Console.WriteLine("You make your way back to the abandoned park...");
+				Console.WriteLine("You make your way back to the abandoned school...");
 				break;
 			default:
 				Console.WriteLine("Invalid entry, try again.");
@@ -317,7 +360,7 @@ public static Player p1;
 	public static void Room4()
 	{
 		//description of room
-		Console.WriteLine(" ");
+		Console.Clear();
 		Console.WriteLine("You are now in the store. This shop is mostly empty, besides the singular shopkeeper who welcomes you with a smile and suggests that you take a thorough glance through his wares for anything that peeks your interest.");
 		Console.WriteLine(" ");
 
@@ -328,7 +371,7 @@ public static Player p1;
 		Console.WriteLine("1. Nail Bat - 50 Gold");
 		Console.WriteLine("2. Military Helmet - 40 Gold");
 		Console.WriteLine("3. Small Key - 70 Gold");
-		Console.WriteLine();
+		Console.WriteLine("4. Exit the store");
 		Console.WriteLine("");
 		//user input
 		int input = Convert.ToInt32(Console.ReadLine());
@@ -403,6 +446,10 @@ public static Player p1;
 					Room4();
 				}
 				break;
+			case 4:
+				Console.WriteLine("You give the shop keeper a small wave goodbye before exiting the store, noticing their pasted on smile quickly fade from the corner of your eye...");
+				Room2();
+				break;
 			default:
 				Console.WriteLine("Invalid entry, try again.");
 				break;
@@ -412,7 +459,7 @@ public static Player p1;
     public static void Room5()
 	{
 		//description of room
-		Console.WriteLine("");
+		Console.Clear();
 		Console.WriteLine("You are now standing in a disgusting sewer. There is an overwhelmingly horrid stench filling the area and scittering can be heard in all directions...");
 		Console.WriteLine("");
 		Thread.Sleep(5000);
@@ -446,8 +493,9 @@ public static Player p1;
 	public static void Room6()
 	{
 		//description of room
+		Console.Clear();
 		Console.WriteLine("You are now in the park. This place is practically a nesting ground for thieves who crave upon the innocents who walk past this park. What will you do?");
-
+		Console.WriteLine("");
 		//player options
 		Console.WriteLine("1. Fight thieves");
 		Console.WriteLine("2. Return to the train station");
@@ -457,7 +505,8 @@ public static Player p1;
 		switch (input)
 		{
 			case 1:
-				Console.WriteLine("");
+				Console.WriteLine("You approach a group of thieves who see you as nothing more than easy prey for them.");
+				Combat(thieves);
 				//Thread.Sleep(2000);
 				break; //breaks out of this entire case, moving  on the next part of da code
 			case 2:
@@ -471,6 +520,8 @@ public static Player p1;
 	public static void Room7()
 	{
 		//description of room
+		Console.Clear();
+		Console.WriteLine("");
 		Console.WriteLine("");
 
 		//player options
@@ -497,6 +548,8 @@ public static Player p1;
 	public static void Room8()
 	{
 		//description of room
+		Console.Clear();
+		Console.WriteLine("");
 		Console.WriteLine("");
 
 		//player options
@@ -523,6 +576,8 @@ public static Player p1;
 	public static void Room9()
 	{
 		//description of room
+		Console.Clear();
+		Console.WriteLine("");
 		Console.WriteLine("");
 
 		//player options
@@ -568,6 +623,13 @@ public static Player p1;
 		thief.EnemyMaxHP = 4;
 		thief.EnemyEXP = 3;
 		thief.EnemyGold = 4;
+		//a group of thieves
+		thieves.EnemyName = "a group of thieves";
+		thieves.EnemyAttack = 5;
+		thieves.EnemyHealth = 20;
+		thieves.EnemyMaxHP = 20;
+		thieves.EnemyEXP = 10;
+		thieves.EnemyGold = 30;
 		//drug addict
 		drugAddict.EnemyName = "Drug Addict";
 		drugAddict.EnemyAttack = 2;
